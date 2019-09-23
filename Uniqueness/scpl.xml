@@ -1,0 +1,2214 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>scpl</name>
+    </assembly>
+    <members>
+        <member name="T:scpl.AxesConstraint.AspectRatio">
+            <summary>
+            Axes Constraint that forces the world width and height pixel lengths
+            to be at the provided ratio. For example, an aspect ratio of 3:2 or
+            1.5 indicates that there should be 1.5 times as many pixels per fixed
+            world length along the x direction than for the same world length along
+            the y direction. In other words, the world length of one pixel along 
+            the x direction is 2/3rds that of the world length of one pixel height
+            in the y direction.
+            </summary>
+            <remarks>
+            This class will never increase the size of the plot bounding box. It 
+            will always be made smaller.
+            </remarks>
+        </member>
+        <member name="M:scpl.AxesConstraint.AspectRatio.#ctor(System.Double)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="a">Aspect Ratio</param>
+        </member>
+        <member name="M:scpl.AxesConstraint.AspectRatio.#ctor(System.Double,scpl.PlotSurface2D.XAxisPosition)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="a">Aspect Ratio</param>
+            <param name="holdFixedX">
+            When adjusting the position of axes, the specified axis will never
+            be moved.
+            </param>
+        </member>
+        <member name="M:scpl.AxesConstraint.AspectRatio.#ctor(System.Double,scpl.PlotSurface2D.YAxisPosition)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="a">Aspect Ratio</param>
+            <param name="holdFixedY">
+            When adjusting the position of axes, the 
+            specified axis will never be moved.
+            </param>
+        </member>
+        <member name="M:scpl.AxesConstraint.AspectRatio.#ctor(System.Double,scpl.PlotSurface2D.XAxisPosition,scpl.PlotSurface2D.YAxisPosition)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="a">Aspect Ratio</param>
+            <param name="holdFixedX">
+            When adjusting the position of axes, the specified axis will never
+            be moved.
+            </param>
+            <param name="holdFixedY">
+            When adjusting the position of axes, the specified axis will never
+            be moved.
+            </param>
+        </member>
+        <member name="M:scpl.AxesConstraint.AspectRatio.ApplyConstraint(scpl.PhysicalAxis@,scpl.PhysicalAxis@,scpl.PhysicalAxis@,scpl.PhysicalAxis@)">
+            <summary>
+            
+            </summary>
+            <param name="pXAxis1"></param>
+            <param name="pYAxis1"></param>
+            <param name="pXAxis2"></param>
+            <param name="pYAxis2"></param>
+        </member>
+        <member name="T:scpl.Axis">
+            <summary>
+             The generic Axis class. 
+             Contains all general axis data except the physical extents of the axis.
+            </summary>
+        </member>
+        <member name="M:scpl.Axis.Clone">
+            <summary>
+            Deep copy of Axis. Includes check to see that this isn't being called by
+            a derived type. The derived type should provide it's own Clone method.
+            </summary>
+            <returns>A copy of the Axis Class</returns>
+        </member>
+        <member name="M:scpl.Axis.DoClone(scpl.Axis,scpl.Axis)">
+            <summary>
+            Helper method for Clone. Does all the copying - can be called by derived
+            types so they don't need to implement this part of the copying themselves.
+            also useful in constructor of derived types that takes Axis class.
+            </summary>
+        </member>
+        <member name="M:scpl.Axis.Init">
+            <summary>
+            Helper function for constructors.
+            Do initialization here so that Clear() method is handled properly
+            </summary>
+        </member>
+        <member name="M:scpl.Axis.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:scpl.Axis.#ctor(System.Double,System.Double)">
+            <summary>
+            Constructor that takes only world min and max values.
+            </summary>
+            <param name="worldMin">The minimum world coordinate.</param>
+            <param name="worldMax">The maximum world coordinate.</param>
+        </member>
+        <member name="M:scpl.Axis.#ctor(scpl.Axis)">
+            <summary>
+            Copy constructor.
+            </summary>
+            <param name="a">The Axis to clone.</param>
+        </member>
+        <member name="M:scpl.Axis.OutOfRange(System.Double)">
+            <summary>
+            Determines whether a world value outside range WorldMin - WorldMax
+            </summary>
+            <param name="coord">the world value to test</param>
+            <returns>true if outside limits, false otherwise</returns>
+        </member>
+        <member name="M:scpl.Axis.LUB(scpl.Axis)">
+            <summary>
+            Sets the world extent of the current axis to be just large enough
+            to encompas the current world extent of the axis, and the world
+            extent of the passed in axis
+            </summary>
+            <param name="a">The other Axis instance.</param>
+        </member>
+        <member name="M:scpl.Axis.WorldToPhysical(System.Double,System.Drawing.PointF,System.Drawing.PointF,System.Boolean)">
+            <summary>
+            World to physical coordinate transform.
+            </summary>
+            <param name="coord">The coordinate value to transform.</param>
+            <param name="physicalMinTmp"></param>
+            <param name="physicalMaxTmp"></param>
+            <param name="clip">if false, then physical value may extend outside worldMin / worldMax.</param>
+            <returns>The transformed coordinates.</returns>
+        </member>
+        <member name="M:scpl.Axis.PhysicalToWorld(System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF,System.Boolean)">
+            <summary>
+            Transformation from physical (screen) coordinates to  world (user) coordinates.
+            </summary>
+            <param name="p">A physical coordinate.</param>
+            <param name="physicalMinTmp"></param>
+            <param name="physicalMaxTmp"></param>
+            <param name="clip">Flag to indicate clipping.</param>
+            <returns>The transformed coordinates.</returns>
+        </member>
+        <member name="M:scpl.Axis.DrawLabel(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Draw Axis Label
+            </summary>
+            <param name="g">The GDI+ drawing surface on which to draw.</param>
+            <param name="offset">offset calculated by derived class that makes sure axis label
+            misses tick labels.</param>
+            <param name="axisPhysMin">The minimum physical extent of the axis.</param>
+            <param name="axisPhysMax">The maximum physical extent of the axis.</param>
+            <returns>boxed RectangleF indicating bounding box of label. null if no label printed.</returns>
+        </member>
+        <member name="M:scpl.Axis.DrawTick(System.Drawing.Graphics,System.Double,System.Double,System.String,System.Drawing.Point,System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF@,System.Drawing.RectangleF@)">
+            <summary>
+            Draws a tick on the axis
+            </summary>
+            <param name="g">The drawing surface</param>
+            <param name="w">The tick position in world coordinates</param>
+            <param name="size">The size of the tick (in pixels)</param>
+            <param name="text">The text associated with the tick</param>
+            <param name="textOffset">The Offset to draw from the auto calculated position</param>
+            <param name="axisPhysMin">The minimum physical extent of the axis</param>
+            <param name="axisPhysMax">The maximum physical extent of the axis</param>
+            <returns> An ArrayList containing the offset from the axis required for an axis label
+            to miss this tick, followed by a bounding rectangle for the tick and tickLabel drawn </returns>
+        </member>
+        <member name="M:scpl.Axis.Draw(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Draw the axis.
+            </summary>
+            <remarks>Polymorphically calls the DrawTicks method of subclasses.</remarks>
+            <param name="g">The drawing surface on which to draw.</param>
+            <param name="physicalMin">The minimum physical extent of the axis.</param>
+            <param name="physicalMax">The maximum physical extent of the axis.</param>
+            <returns>The bounding rectangle of the axis including axis line, label, tick marks and tick mark labels</returns>
+        </member>
+        <member name="M:scpl.Axis.DrawTicks(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF,System.Object@,System.Object@)">
+            <summary>
+            DrawTicks method. In base axis class this does nothing.
+            </summary>
+            <param name="g">The graphics surface on which to draw</param>
+            <param name="physicalMin"></param>
+            <param name="physicalMax"></param>
+            <param name="labelOffset"></param>
+            <param name="boundingBox"></param>
+        </member>
+        <member name="M:scpl.Axis.DoDraw(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Draws axis line, labels and determines the used space.
+            </summary>
+            <param name="g">The drawing surface on which to draw.</param>
+            <param name="labelOffset">The label offset.</param>
+            <param name="physicalMin">The minimum physical extent of the axis.</param>
+            <param name="physicalMax">The maximum physical extent of the axis.</param>
+            <returns>The RectangleF containing the axis and labels.</returns>
+        </member>
+        <member name="M:scpl.Axis.AxisNormVector(System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Returns unitary vector oriented along axis.
+            </summary>
+            <param name="min"></param>
+            <param name="max"></param>
+            <returns>The unitary vector.</returns>
+        </member>
+        <member name="P:scpl.Axis.LargeTickSize">
+            <summary>
+            Accessor for the size of the large tick.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.SmallTickSize">
+            <summary>
+            Accessor for the size of the small ticks.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.WorldMax">
+            <summary>
+            Accessor for the maximum extent of the world (user) coordinates.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.WorldMin">
+            <summary>
+            Accessor for the minumum extent of the world (user) coordinates.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.Length">
+            <summary>
+            Length of the Axis (in world coordinates).
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.TickTextFont">
+            <summary>
+            Accessor for the tick text Font.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.LabelFont">
+            <summary>
+            Accessor for the label Font.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.LabelBrush">
+            <summary>
+            Accessor for the Brush used to draw the label.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.TickTextBrush">
+            <summary>
+            Accessor for the Brush used to draw the tick text.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.Label">
+            <summary>
+            Accessor for the label to display on the axis.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.FontScale">
+            <summary>
+            Accessor for the font scale factor.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.TickScale">
+            <summary>
+            Accessor for the distance between ticks.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.TickTextNextToAxis">
+            <summary>
+            If true, the text associated with the ticks will appear on the opposite side of the axis to the tick.
+            If false, the text will appear at the end of the tick.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.Hidden">
+            <summary>
+            Flag to hide the axis.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.Reversed">
+            <summary>
+            Reverse the display of the axis so that the values are
+            printed from right to left instead of left to right
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.HideTickText">
+            <summary>
+            Flag to hide the tick text.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.LinePen">
+            <summary>
+            Accessor for the Pen used to draw the line
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.TicksAngle">
+            <summary>
+            The angle used to draw ticks.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.LargeTickPositions">
+            <summary>
+            The ArrayList containing the positions of the large ticks.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.SmallTickPositions">
+            <summary>
+            The ArrayList containing the positions of the small ticks.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.NumberFormat">
+            <summary>
+            The .NET number format to use for labeling the axis
+            </summary>
+        </member>
+        <member name="T:scpl.BasePlot">
+            <summary>
+            Summary description for BasePlot.
+            </summary>
+        </member>
+        <member name="M:scpl.BasePlot.#ctor">
+            <summary>
+            Parameterless and empty constructor.
+            </summary>
+        </member>
+        <member name="M:scpl.BasePlot.DrawLegendLine(System.Drawing.Graphics,System.Drawing.RectangleF)">
+            <summary>
+            Method that the trace classes use to draw the line
+            in the plot legend.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="startEnd">The RectangleF storing the position of the legend line.</param>
+        </member>
+        <member name="F:scpl.BasePlot.pen_">
+            <summary>
+            The protected Pen member used to draw the trace.
+            </summary>
+        </member>
+        <member name="F:scpl.BasePlot.color_">
+            <summary>
+            Color of Plot [TODO: Did we agree not to have this here!?!!].
+            </summary>
+        </member>
+        <member name="P:scpl.BasePlot.Pen">
+            <summary>
+            Accessor for the Pen used to draw the trace.
+            </summary>
+        </member>
+        <member name="P:scpl.BasePlot.Color">
+            <summary>
+            Plot Color property.
+            </summary>
+        </member>
+        <member name="P:scpl.BasePlot.Label">
+            <summary>
+            The trace label.
+            </summary>
+        </member>
+        <member name="T:scpl.Bitmap.PlotSurface2D">
+            <summary>
+            The PlotSurface2D object that has the ability to be rendered in a bitmap.
+            </summary>
+        </member>
+        <member name="T:scpl.IPlotSurface2D">
+            <summary>
+            The common Interface for all *.PlotSurface2D classes.
+            </summary>
+        </member>
+        <member name="M:scpl.IPlotSurface2D.Add(scpl.IDrawable)">
+            <summary>
+            Adds an IPlot object to the PlotSurface2D inner collection.
+            </summary>
+            <param name="p">An object implementing the IPlot interface.</param>
+        </member>
+        <member name="M:scpl.IPlotSurface2D.Add(scpl.IDrawable,scpl.PlotSurface2D.XAxisPosition,scpl.PlotSurface2D.YAxisPosition)">
+            <summary>
+            Adds an IPlot object to the PlotSurface2D inner collection.
+            </summary>
+            <param name="p">An object implementing the IPlot interface.</param>
+            <param name="xax">The position of the abscissa axis.</param>
+            <param name="yax">The position of the ordinate axis.</param>
+        </member>
+        <member name="M:scpl.IPlotSurface2D.Clear">
+            <summary>
+            Clears the PlotSurface2D.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlotSurface2D.Padding">
+            <summary>
+            The padding space (in graphics units) for the plot.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlotSurface2D.PlotBackColor">
+            <summary>
+            The plot background color.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlotSurface2D.Title">
+            <summary>
+            The plot title.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlotSurface2D.TitleFont">
+            <summary>
+            The plot title font.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlotSurface2D.SmoothingMode">
+            <summary>
+            Smoothing mode to use when drawing plots.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlotSurface2D.XAxis1">
+            <summary>
+            The bottom abscissa axis.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlotSurface2D.XAxis2">
+            <summary>
+            The top abscissa axis.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlotSurface2D.YAxis1">
+            <summary>
+            The left ordinate axis.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlotSurface2D.YAxis2">
+            <summary>
+            The right ordinate axis.
+            </summary>
+        </member>
+        <member name="M:scpl.Bitmap.PlotSurface2D.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Bitmap.PlotSurface2D constructor.
+            </summary>
+            <param name="xSize">width of the bitmap.</param>
+            <param name="ySize">height of the bitmap.</param>
+        </member>
+        <member name="M:scpl.Bitmap.PlotSurface2D.#ctor(System.Drawing.Bitmap)">
+            <summary>
+            Bitmap.PlotSurface2D constructor.
+            </summary>
+            <param name="b">The Bitmap where the control is to be rendered.</param>
+        </member>
+        <member name="M:scpl.Bitmap.PlotSurface2D.Draw(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Renders the plot.
+            </summary>
+            <param name="g">The graphics surface.</param>
+            <param name="bounds">The rectangle storing the bounds for rendering.</param>
+        </member>
+        <member name="M:scpl.Bitmap.PlotSurface2D.Clear">
+            <summary>
+            Clears the plot.
+            </summary>
+        </member>
+        <member name="M:scpl.Bitmap.PlotSurface2D.Add(scpl.IDrawable)">
+            <summary>
+            Adds a trace plot to the plot surface.
+            </summary>
+            <param name="p">The trace plot to add.</param>
+        </member>
+        <member name="M:scpl.Bitmap.PlotSurface2D.Add(scpl.IDrawable,scpl.PlotSurface2D.XAxisPosition,scpl.PlotSurface2D.YAxisPosition)">
+            <summary>
+            Adds a trace plot to the plot surface.
+            </summary>
+            <param name="p">The trace plot to add.</param>
+            <param name="xp">The position of the X axis.</param>
+            <param name="yp">The position of the Y axis.</param>
+        </member>
+        <member name="M:scpl.Bitmap.PlotSurface2D.ToBrowser">
+            <summary>
+            Renders the bitmap to a MemoryStream.
+            </summary>
+            <returns>The MemoryStream object.</returns>
+        </member>
+        <member name="M:scpl.Bitmap.PlotSurface2D.Refresh">
+            <summary>
+            Refreshes the plot.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.Title">
+            <summary>
+            The plot title.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.TitleFont">
+            <summary>
+            The plot title font.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.Padding">
+            <summary>
+            The padding space (in graphics units) for the plot.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.XAxis1">
+            <summary>
+            The bottom abscissa axis.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.YAxis1">
+            <summary>
+            The left ordinate axis.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.XAxis2">
+            <summary>
+            The top abscissa axis.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.YAxis2">
+            <summary>
+            The right ordinate axis.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.Legend">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.PlotBackColor">
+            <summary>
+            The plot background color.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.Width">
+            <summary>
+            The bitmap width (read only).
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.Height">
+            <summary>
+            The bitmap height (read only).
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.Bitmap">
+            <summary>
+            The bitmap where to render the control.
+            </summary>
+        </member>
+        <member name="T:scpl.CandlePlot">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="T:scpl.IPlot">
+            <summary>
+            Interface implemented by all trace objects that can be added to a PlotSurface2D.
+            </summary>
+        </member>
+        <member name="T:scpl.IDrawable">
+            <summary>
+            Summary description for IDrawable.
+            </summary>
+        </member>
+        <member name="M:scpl.IDrawable.Draw(System.Drawing.Graphics,scpl.PhysicalAxis,scpl.PhysicalAxis)">
+            <summary>
+            The method used to draw the trace object.
+            </summary>
+            <param name="g">The graphic object where the drawing is performed.</param>
+            <param name="xAxis">The abscissa physical axis.</param>
+            <param name="yAxis">The ordinate physical axis.</param>
+        </member>
+        <member name="M:scpl.IPlot.DrawLegendLine(System.Drawing.Graphics,System.Drawing.RectangleF)">
+            <summary>
+            Method used to draw a representation of the plot in a legend.
+            </summary>
+            <param name="g">The graphic object where the drawing is performed.</param>
+            <param name="startEnd">The bounds of where the drawing takes place.</param>
+        </member>
+        <member name="M:scpl.IPlot.SuggestXAxis">
+            <summary>
+            The method used to set the abscissa axis defaults.
+            </summary>
+        </member>
+        <member name="M:scpl.IPlot.SuggestYAxis">
+            <summary>
+            The method used to set the ordinate axis defaults.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlot.Label">
+            <summary>
+            The string label associated to the plot.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlot.ShowLegendLine">
+            <summary>
+            Whether or not to include an entry for this plot in the legend.
+            </summary>
+        </member>
+        <member name="P:scpl.IPlot.DataSource">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="P:scpl.IPlot.DataMember">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="P:scpl.ISequencePlot.AbscissaData">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="M:scpl.CandlePlot.DrawLegendLine(System.Drawing.Graphics,System.Drawing.RectangleF)">
+            <summary>
+            Method that the trace classes use to draw the line
+            in the plot legend.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="startEnd">The RectangleF storing the position of the legend line.</param>
+        </member>
+        <member name="F:scpl.CandlePlot.pen_">
+            <summary>
+            The protected Pen member used to draw the trace.
+            </summary>
+        </member>
+        <member name="F:scpl.CandlePlot.color_">
+            <summary>
+            Color of Plot [TODO: Did we agree not to have this here!?!!].
+            </summary>
+        </member>
+        <member name="P:scpl.CandlePlot.Pen">
+            <summary>
+            Accessor for the Pen used to draw the trace.
+            </summary>
+        </member>
+        <member name="P:scpl.CandlePlot.Color">
+            <summary>
+            Plot Color property.
+            </summary>
+        </member>
+        <member name="P:scpl.CandlePlot.Label">
+            <summary>
+            The trace label.
+            </summary>
+        </member>
+        <member name="T:scpl.DateTimeAxis">
+            <summary>
+            The DateTimeAxis class
+            </summary>
+        </member>
+        <member name="M:scpl.DateTimeAxis.Clone">
+            <summary>
+            Deep copy of DateTimeAxis.
+            </summary>
+            <returns>A copy of the DateTimeAxis Class.</returns>
+        </member>
+        <member name="M:scpl.DateTimeAxis.DoClone(scpl.DateTimeAxis,scpl.DateTimeAxis)">
+            <summary>
+            Helper method for Clone.
+            </summary>
+            <param name="a">The original object to clone.</param>
+            <param name="b">The cloned object.</param>
+        </member>
+        <member name="M:scpl.DateTimeAxis.#ctor(scpl.Axis)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="a">Axis to construct from</param>
+        </member>
+        <member name="M:scpl.DateTimeAxis.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:scpl.DateTimeAxis.#ctor(System.Double,System.Double)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="worldMin">World min of axis</param>
+            <param name="worldMax">World max of axis</param>
+        </member>
+        <member name="M:scpl.DateTimeAxis.#ctor(System.Int64,System.Int64)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="worldMin">World min of axis</param>
+            <param name="worldMax">World max of axis</param>
+        </member>
+        <member name="M:scpl.DateTimeAxis.#ctor(System.DateTime,System.DateTime)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="worldMin">World min of axis</param>
+            <param name="worldMax">World max of axis</param>
+        </member>
+        <member name="P:scpl.DateTimeAxis.LargeTickPositions">
+            <summary>
+            An ArrayList containing the positions of the large ticks.
+            </summary>
+            <remarks>
+            
+            </remarks>
+        </member>
+        <member name="T:scpl.FontScaler">
+            <summary>
+            The FontScaler class, providing font scaling capabilities.
+            </summary>
+        </member>
+        <member name="M:scpl.FontScaler.scaleFont(System.Drawing.Font,System.Double)">
+            <summary>
+            Staic method to scale fonts.
+            </summary>
+            <param name="initial">The initial font object.</param>
+            <param name="scale">The scale factor.</param>
+            <returns></returns>
+        </member>
+        <member name="T:scpl.Grid">
+            <summary>
+            Class that provides grid drawing functionality.
+            </summary>
+        </member>
+        <member name="M:scpl.Grid.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:scpl.Grid.DrawGridLines(System.Drawing.Graphics,scpl.PhysicalAxis,scpl.PhysicalAxis,System.Collections.ArrayList,System.Boolean,System.Drawing.Pen)">
+            <summary>
+            Does all the work in drawing grid lines.
+            </summary>
+            <param name="g">The graphics surface on which to render.</param>
+            <param name="axis">TODO</param>
+            <param name="orthogonalAxis">TODO</param>
+            <param name="a">the list of world values to draw grid lines at.</param>
+            <param name="horizontal">true if want horizontal lines, false otherwise.</param>
+            <param name="p">the pen to use to draw the grid lines.</param>
+        </member>
+        <member name="M:scpl.Grid.Draw(System.Drawing.Graphics,scpl.PhysicalAxis,scpl.PhysicalAxis)">
+            <summary>
+            Draws the grid
+            </summary>
+            <param name="g">The graphics surface on which to draw</param>
+            <param name="xAxis">The physical x axis to draw horizontal lines parallel to.</param>
+            <param name="yAxis">The physical y axis to draw vertical lines parallel to.</param>
+        </member>
+        <member name="P:scpl.Grid.HorizontalGridType">
+            <summary>
+            The coarseness of the horizontal grid lines.
+            </summary>
+        </member>
+        <member name="P:scpl.Grid.VerticalGridType">
+            <summary>
+            The coarseness of the vertical grid lines.
+            </summary>
+        </member>
+        <member name="P:scpl.Grid.MajorGridPen">
+            <summary>
+            The Pen used for the major grid lines.
+            </summary>
+        </member>
+        <member name="P:scpl.Grid.MinorGridPen">
+            <summary>
+            The Pen used for the minor grid lines.
+            </summary>
+        </member>
+        <member name="T:scpl.Grid.GridType">
+            <summary>
+            GridType enumeration.
+            </summary>
+        </member>
+        <member name="F:scpl.Grid.GridType.None">
+            <summary>
+            No grid.
+            </summary>
+        </member>
+        <member name="F:scpl.Grid.GridType.Coarse">
+            <summary>
+            Coarse grid.
+            </summary>
+        </member>
+        <member name="F:scpl.Grid.GridType.Fine">
+            <summary>
+            Fine grid.
+            </summary>
+        </member>
+        <member name="T:scpl.HistogramPlot">
+            <summary>
+            Provides ability to trace histogram plots.
+            </summary>
+        </member>
+        <member name="M:scpl.HistogramPlot.#ctor">
+            <summary>
+            Constructor for the HistogramPlot.
+            </summary>
+        </member>
+        <member name="M:scpl.HistogramPlot.Draw(System.Drawing.Graphics,scpl.PhysicalAxis,scpl.PhysicalAxis)">
+            <summary>
+            Renders the histogram.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="xAxis">The X axis where the trace plot is attached to.</param>
+            <param name="yAxis">The Y axis where the trace plot is attached to.</param>
+        </member>
+        <member name="M:scpl.HistogramPlot.SuggestXAxis">
+            <summary>
+            Provides a hint for the X axis.
+            </summary>
+            <returns>The X axis.</returns>
+        </member>
+        <member name="M:scpl.HistogramPlot.SuggestYAxis">
+            <summary>
+            Provides a hint for the Y axis.
+            </summary>
+            <returns>The Y axis.</returns>
+        </member>
+        <member name="M:scpl.HistogramPlot.StackedTo(scpl.HistogramPlot)">
+            <summary>
+            Stack the histogram to another HistogramPlot.
+            </summary>
+            <param name="hp">The instance to stack data to.</param>
+        </member>
+        <member name="M:scpl.HistogramPlot.DrawLegendLine(System.Drawing.Graphics,System.Drawing.RectangleF)">
+            <summary>
+            Draws the HistogramPlot legend in the same style as the data plot.
+            </summary>
+            <param name="g">The Graphics surface to render.</param>
+            <param name="startEnd">The rectangle where to plot the legend.</param>
+        </member>
+        <member name="P:scpl.HistogramPlot.BrushOrientation">
+            <summary>
+            Set/Get the orientation of the linear color gradient.
+            </summary>
+        </member>
+        <member name="P:scpl.HistogramPlot.Filled">
+            <summary>
+            Flag for filling the interior of the histogram bars.
+            </summary>
+        </member>
+        <member name="P:scpl.HistogramPlot.BaseWidth">
+            <summary>
+            The width of the histogram bar with respect to the data spacing 
+            (in percentage 0-1).
+            </summary>
+        </member>
+        <member name="P:scpl.HistogramPlot.Center">
+            <summary>
+            Flag for centering the histogram.
+            </summary>
+        </member>
+        <member name="P:scpl.HistogramPlot.isStacked">
+            <summary>
+            Flag to determine if the histogram is stacked to another instance.
+            </summary>
+        </member>
+        <member name="T:scpl.HistogramPlot.BrushOrientations">
+            <summary>
+            The enumeration to provide a linear gradient brush.
+            </summary>
+        </member>
+        <member name="F:scpl.HistogramPlot.BrushOrientations.None">
+            <summary>
+            No brush filling.
+            </summary>
+        </member>
+        <member name="F:scpl.HistogramPlot.BrushOrientations.Horizontal">
+            <summary>
+            Horizontal gradient filling from the chosen color to White.
+            </summary>
+        </member>
+        <member name="F:scpl.HistogramPlot.BrushOrientations.HorizontalFadeIn">
+            <summary>
+            Horizontal gradient filling, with white at the center.
+            </summary>
+        </member>
+        <member name="F:scpl.HistogramPlot.BrushOrientations.HorizontalFadeOut">
+            <summary>
+            Horizontal gradient filling, with white at the edges.
+            </summary>
+        </member>
+        <member name="F:scpl.HistogramPlot.BrushOrientations.Vertical">
+            <summary>
+            Vertical gradient filling from the chosen color to White.
+            </summary>
+        </member>
+        <member name="F:scpl.HistogramPlot.BrushOrientations.VerticalFadeIn">
+            <summary>
+            Vertical gradient filling, with white at the center.
+            </summary>
+        </member>
+        <member name="F:scpl.HistogramPlot.BrushOrientations.VerticalFadeOut">
+            <summary>
+            Vertical gradient filling, with white at the edges.
+            </summary>
+        </member>
+        <member name="T:scpl.IMeshPlot">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="M:scpl.ImagePlot.Draw(System.Drawing.Graphics,scpl.PhysicalAxis,scpl.PhysicalAxis)">
+            <summary>
+            TODO: block positions may be off by a pixel or so. maybe. Re-think calculations.
+            </summary>
+            <param name="g"></param>
+            <param name="xAxis"></param>
+            <param name="yAxis"></param>
+        </member>
+        <member name="M:scpl.ImagePlot.SuggestXAxis">
+            <summary>
+            The method used to set the abscissa axis defaults.
+            </summary>
+        </member>
+        <member name="M:scpl.ImagePlot.SuggestYAxis">
+            <summary>
+            The method used to set the ordinate axis defaults.
+            </summary>
+        </member>
+        <member name="P:scpl.ImagePlot.Label">
+            <summary>
+            The trace label.
+            </summary>
+        </member>
+        <member name="P:scpl.ImagePlot.Center">
+            <summary>
+            Flag for centering the histogram.
+            </summary>
+        </member>
+        <member name="T:scpl.LabelAxis">
+            <summary>
+            The class implementing labeled axes.
+            </summary>
+        </member>
+        <member name="M:scpl.LabelAxis.Clone">
+            <summary>
+            Deep copy of LabelAxis.
+            </summary>
+            <returns>A copy of the LinearAxis Class.</returns>
+        </member>
+        <member name="M:scpl.LabelAxis.DoClone(scpl.LabelAxis,scpl.LabelAxis)">
+            <summary>
+            Helper method for Clone.
+            </summary>
+            <param name="a">The original object to clone.</param>
+            <param name="b">The cloned object.</param>
+        </member>
+        <member name="M:scpl.LabelAxis.#ctor(scpl.Axis)">
+            <summary>
+            Constructor, cloning an existing Axis.
+            </summary>
+            <param name="a">The Axis to clone.</param>
+        </member>
+        <member name="M:scpl.LabelAxis.#ctor">
+            <summary>
+            Default parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:scpl.LabelAxis.#ctor(System.Double,System.Double)">
+            <summary>
+            Constructor that takes only world min and max values.
+            </summary>
+            <param name="worldMin">The minimum world coordinate.</param>
+            <param name="worldMax">The maximum world coordinate.</param>
+        </member>
+        <member name="M:scpl.LabelAxis.AddLabel(System.String,System.Double)">
+            <summary>
+            Method to add the labels to the axis.
+            </summary>
+            <param name="name">The label to display.</param>
+            <param name="val">A numeric value.</param>
+        </member>
+        <member name="P:scpl.LabelAxis.LargeTickPositions">
+            <summary>
+            The ArrayList containing the positions of the large ticks.
+            </summary>
+        </member>
+        <member name="T:scpl.Legend">
+            <summary>
+            Legend functionality specific to drawing legends for a PlotSurface2D.
+            </summary>
+        </member>
+        <member name="T:scpl.LegendBase">
+            <summary>
+            Provides functionality for drawing legends.
+            </summary>
+            <remarks>
+            The class is quite closely tied to PlotSurface2D. 
+            </remarks>
+        </member>
+        <member name="M:scpl.LegendBase.#ctor">
+            <summary>
+            Parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:scpl.LegendBase.GetBoundingBox(System.Int32,System.Int32,System.Collections.ArrayList,System.Single)">
+            <summary>
+            Return the bounding box of the legend.
+            </summary>
+            <param name="xPos">Legend horizontal position.</param>
+            <param name="yPos">Legend vertical position.</param>
+            <param name="plots">The trace plot ArrayList.</param>
+            <param name="scale">scale?</param>
+            <returns>The RectangleF holding the bounding box.</returns>
+        </member>
+        <member name="M:scpl.LegendBase.Draw(System.Drawing.Graphics,System.Single,System.Single,System.Collections.ArrayList,System.Single)">
+            <summary>
+            Draws the legend.
+            </summary>
+            <param name="g">The Graphics surface used for rendering.</param>
+            <param name="xPos">Horizontal position.</param>
+            <param name="yPos">Vertical position.</param>
+            <param name="plots">The trace plot ArrayList.</param>
+            <param name="scale">scale?</param>
+            <returns></returns>
+        </member>
+        <member name="P:scpl.LegendBase.Font">
+            <summary>
+            The legend Font.
+            </summary>
+        </member>
+        <member name="P:scpl.LegendBase.BorderStyle">
+            <summary>
+            The border style of the legend.
+            </summary>
+        </member>
+        <member name="T:scpl.LegendBase.BorderType">
+            <summary>
+            The types of legend borders (enum).
+            </summary>
+        </member>
+        <member name="F:scpl.LegendBase.BorderType.None">
+            <summary>
+            No border.
+            </summary>
+        </member>
+        <member name="F:scpl.LegendBase.BorderType.Line">
+            <summary>
+            Line border.
+            </summary>
+        </member>
+        <member name="F:scpl.LegendBase.BorderType.Shadow">
+            <summary>
+            Shaded border.
+            </summary>
+        </member>
+        <member name="M:scpl.Legend.AttachTo(scpl.PlotSurface2D.XAxisPosition,scpl.PlotSurface2D.YAxisPosition)">
+            <summary>
+            Attach the legend to the specified axes.
+            </summary>
+            <param name="xa">The position of the X axis.</param>
+            <param name="ya">The position of the Y axis.</param>
+        </member>
+        <member name="P:scpl.Legend.XOffset">
+            <summary>
+            Horizontal offset for the legend.
+            </summary>
+        </member>
+        <member name="P:scpl.Legend.YOffset">
+            <summary>
+            Vertical offset for the legend.
+            </summary>
+        </member>
+        <member name="P:scpl.Legend.VerticalEdgePlacement">
+            <summary>
+            Defines the vertical placement of the legend (inside or outside).
+            </summary>
+        </member>
+        <member name="P:scpl.Legend.HorizontalEdgePlacement">
+            <summary>
+            Defines the horizontal placement of the legend (inside or outside).
+            </summary>
+        </member>
+        <member name="T:scpl.Legend.Placement">
+            <summary>
+            The types of legend placements (enum).
+            </summary>
+        </member>
+        <member name="F:scpl.Legend.Placement.Inside">
+            <summary>
+            Inside the plot area.
+            </summary>
+        </member>
+        <member name="F:scpl.Legend.Placement.Outside">
+            <summary>
+            Outside the plot area.
+            </summary>
+        </member>
+        <member name="T:scpl.LinearAxis">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:scpl.LinearAxis.Clone">
+            <summary>
+            Deep copy of LinearAxis.
+            </summary>
+            <returns>A copy of the LinearAxis Class</returns>
+        </member>
+        <member name="M:scpl.LinearAxis.DoClone(scpl.LinearAxis,scpl.LinearAxis)">
+            <summary>
+            Helper method for Clone.
+            </summary>
+        </member>
+        <member name="M:scpl.LinearAxis.#ctor(scpl.Axis)">
+            <summary>
+            Constructor, cloning an existing Axis.
+            </summary>
+            <param name="a">The Axis to clone.</param>
+        </member>
+        <member name="M:scpl.LinearAxis.#ctor">
+            <summary>
+            Default parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:scpl.LinearAxis.#ctor(System.Double,System.Double)">
+            <summary>
+            Constructor that takes only world min and max values.
+            </summary>
+            <param name="worldMin">The minimum world coordinate.</param>
+            <param name="worldMax">The maximum world coordinate.</param>
+        </member>
+        <member name="M:scpl.LinearAxis.DrawTicks(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF,System.Object@,System.Object@)">
+            <summary>
+            Draw the ticks
+            </summary>
+            <param name="g">The drawing surface on which to draw.</param>
+            <param name="physicalMin"> </param>
+            <param name="physicalMax"> </param>
+            <param name="boundingBox"> </param>
+            <param name="labelOffset"> </param>
+        </member>
+        <member name="F:scpl.LinearAxis.largeTickStep_">
+            <summary>
+            If set, gives the distance between large ticks.
+            </summary>
+        </member>
+        <member name="F:scpl.LinearAxis.largeTickValue_">
+            <summary>
+            If set, a large tick will be placed at this position, and other large ticks will 
+            be placed relative to this position.
+            </summary>
+        </member>
+        <member name="F:scpl.LinearAxis.numberSmallTicks_">
+            <summary>
+            The number of small ticks between large ticks.
+            </summary>
+        </member>
+        <member name="P:scpl.LinearAxis.SmallTickPositions">
+            <summary>
+            The ArrayList containing the positions of the small ticks.
+            </summary>
+        </member>
+        <member name="P:scpl.LinearAxis.LargeTickPositions">
+            <summary>
+            Get the large tick positions for this axis.
+            </summary>
+        </member>
+        <member name="P:scpl.LinearAxis.LargeTickStep">
+            <summary>
+            If set, gives the distance between large ticks.
+            </summary>
+        </member>
+        <member name="P:scpl.LinearAxis.LargeTickValue">
+            <summary>
+            If set, a large tick will be placed at this position, and other large ticks will 
+            be placed relative to this position.
+            </summary>
+        </member>
+        <member name="P:scpl.LinearAxis.NumberSmallTicks">
+            <summary>
+            The number of small ticks between large ticks.
+            </summary>
+        </member>
+        <member name="P:scpl.LinearAxis.Scale">
+            <summary>
+            Affects 
+            </summary>
+        </member>
+        <member name="T:scpl.LinePlot">
+            <summary>
+            Provides ability to trace line plots.
+            </summary>
+        </member>
+        <member name="M:scpl.LinePlot.Draw(System.Drawing.Graphics,scpl.PhysicalAxis,scpl.PhysicalAxis)">
+            <summary>
+            Renders the line plot.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="xAxis">The X axis where the trace plot is attached to.</param>
+            <param name="yAxis">The Y axis where the trace plot is attached to.</param>
+        </member>
+        <member name="M:scpl.LinePlot.SuggestXAxis">
+            <summary>
+            Provides a hint for the X axis.
+            </summary>
+            <returns>The X axis.</returns>
+        </member>
+        <member name="M:scpl.LinePlot.SuggestYAxis">
+            <summary>
+            Provides a hint for the Y axis.
+            </summary>
+            <returns>The Y axis.</returns>
+        </member>
+        <member name="T:scpl.LogAxis">
+            <summary>
+            The class implementing logarithmic axes.
+            </summary>
+        </member>
+        <member name="M:scpl.LogAxis.Clone">
+            <summary>
+            Deep Copy of the LogAxis.
+            </summary>
+            <returns>A Copy of the LogAxis Class.</returns>
+        </member>
+        <member name="M:scpl.LogAxis.DoClone(scpl.LogAxis,scpl.LogAxis)">
+            <summary>
+            Helper method for Clone (actual implementation)
+            </summary>
+            <param name="a">The original object to clone.</param>
+            <param name="b">The cloned object.</param>
+        </member>
+        <member name="M:scpl.LogAxis.#ctor">
+            <summary>
+            Default parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:scpl.LogAxis.#ctor(scpl.Axis)">
+            <summary>
+            Constructor, cloning an existing Axis.
+            </summary>
+            <param name="a">The Axis to clone.</param>
+        </member>
+        <member name="M:scpl.LogAxis.#ctor(System.Double,System.Double)">
+            <summary>
+            Constructor that takes only world min and max values.
+            </summary>
+            <param name="worldMin">The minimum world coordinate.</param>
+            <param name="worldMax">The maximum world coordinate.</param>
+        </member>
+        <member name="M:scpl.LogAxis.DrawTicks(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF,System.Object@,System.Object@)">
+            <summary>
+            Draw the ticks.
+            </summary>
+            <param name="g">The drawing surface on which to draw.</param>
+            <param name="physicalMin">The minimum physical extent of the axis.</param>
+            <param name="physicalMax">The maximum physical extent of the axis.</param>
+            <returns> An ArrayList containing the offset from the axis required for an axis label
+            to miss this tick, followed by a bounding rectangle for the tick and tickLabel drawn.</returns>
+        </member>
+        <member name="M:scpl.LogAxis.DetermineTickSpacing">
+            <summary>
+            Determines the tick spacing.
+            </summary>
+            <returns>The tick spacing (in decades!)</returns>
+        </member>
+        <member name="M:scpl.LogAxis.DetermineNumberSmallTicks(System.Double)">
+            <summary>
+            Determines the number of small ticks between two large ticks.
+            </summary>
+            <param name="bigTickDist">The distance between two large ticks.</param>
+            <returns>The number of small ticks.</returns>
+        </member>
+        <member name="M:scpl.LogAxis.WorldToPhysical(System.Double,System.Drawing.PointF,System.Drawing.PointF,System.Boolean)">
+            <summary>
+            Transformation from world (user) coordinates to physical (screen) coordinates.
+            </summary>
+            <param name="coord">The coordinate value to transform</param>
+            <param name="physicalMin"></param>
+            <param name="physicalMax"></param>
+            <param name="clip">Flag to indicate clipping.</param>
+            <returns>The transformed coordinates.</returns>
+        </member>
+        <member name="M:scpl.LogAxis.PhysicalToWorld(System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF,System.Boolean)">
+            <summary>
+            Transformation from physical (screen) coordinates to  world (user) coordinates.
+            </summary>
+            <param name="p">A physical coordinate.</param>
+            <param name="physicalMin"></param>
+            <param name="physicalMax"></param>
+            <param name="clip">Flag to indicate clipping.</param>
+            <returns>The transformed coordinates.</returns>
+        </member>
+        <member name="P:scpl.LogAxis.SmallTickPositions">
+            <summary>
+            Fills and returns an ArrayList containing the small tick positions for the Log Axis.
+            </summary>
+        </member>
+        <member name="P:scpl.LogAxis.LargeTickPositions">
+            <summary>
+            Fills and returns an ArrayList containing the large tick positions for the Log Axis.
+            </summary>
+        </member>
+        <member name="P:scpl.LogAxis.LargeTickStep">
+            <summary>
+            The step between large ticks, expressed in decades for the Log scale.
+            </summary>
+        </member>
+        <member name="P:scpl.LogAxis.LargeTickValue">
+            <summary>
+            Position for a large tick.
+            </summary>
+        </member>
+        <member name="P:scpl.LogAxis.NumberSmallTicks">
+            <summary>
+            The number of small ticks between large ticks.
+            </summary>
+        </member>
+        <member name="P:scpl.LogAxis.WorldMin">
+            <summary>
+            Accessor for the minimum extent of the world (user) coordinates.
+            </summary>
+        </member>
+        <member name="P:scpl.LogAxis.WorldMax">
+            <summary>
+            Accessor for the maximum extent of the world (user) coordinates.
+            </summary>
+        </member>
+        <member name="T:scpl.MarkerType">
+            <summary>
+            Enumeration for the Marker Types
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Cross1">
+            <summary>
+            A simple cross marker (x).
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Cross2">
+            <summary>
+            Another simple cross marker (+).
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Circle">
+            <summary>
+            A circle marker.
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Square">
+            <summary>
+            A square marker.
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Triangle">
+            <summary>
+            A triangle marker (upwards).
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.TriangleUp">
+            <summary>
+            A triangle marker (upwards).
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.TriangleDown">
+            <summary>
+            A triangle marker (upwards).
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Diamond">
+            <summary>
+            A diamond,
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.FilledCircle">
+            <summary>
+            A filled circle
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.FilledSquare">
+            <summary>
+            A filled square
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.FilledTriangle">
+            <summary>
+            A filled triangle
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Flag">
+            <summary>
+            A small flag (up)
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.FlagUp">
+            <summary>
+            A small flag (up)
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.FlagDown">
+            <summary>
+            A small flag (down)
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.None">
+            <summary>
+            No marker
+            </summary>
+        </member>
+        <member name="T:scpl.Marker">
+            <summary>
+            Summary description for Marker.
+            </summary>
+        </member>
+        <member name="M:scpl.Marker.#ctor">
+            <summary>
+            Parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:scpl.Marker.#ctor(scpl.MarkerType)">
+            <summary>
+            Constructor, declaring the marker type.
+            </summary>
+            <param name="markertype">The marker type.</param>
+        </member>
+        <member name="M:scpl.Marker.#ctor(scpl.MarkerType,System.Int32)">
+            <summary>
+            Constructor, declaring the marker type and size.
+            </summary>
+            <param name="markertype">The marker type.</param>
+            <param name="size">The marker size.</param>
+        </member>
+        <member name="M:scpl.Marker.#ctor(scpl.MarkerType,System.Int32,System.Drawing.Color)">
+            <summary>
+            Constructor, declaring the marker type, size and color.
+            </summary>
+            <param name="markertype">The marker type.</param>
+            <param name="size">The marker size.</param>
+            <param name="color">The marker color.</param>
+        </member>
+        <member name="M:scpl.Marker.#ctor(scpl.MarkerType,System.Int32,System.Drawing.Pen)">
+            <summary>
+            Constructor, declaring the marker type, size and Pen.
+            </summary>
+            <param name="markertype">The marker type.</param>
+            <param name="size">The marker size.</param>
+            <param name="pen">The marker Pen.</param>
+        </member>
+        <member name="M:scpl.Marker.#ctor(scpl.MarkerType,System.Int32,System.Drawing.Pen,System.Boolean)">
+            <summary>
+            Constructor, declaring the marker type, size and Pen.
+            </summary>
+            <param name="markertype">The marker type.</param>
+            <param name="size">The marker size.</param>
+            <param name="pen">The marker Pen.</param>
+            <param name="fill">The fill flag.</param>
+        </member>
+        <member name="M:scpl.Marker.Draw(System.Drawing.Graphics,System.Int32,System.Int32)">
+            <summary>
+            Draws the marker at the specified position.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="x">The X position (physical).</param>
+            <param name="y">The Y position (physical).</param>
+        </member>
+        <member name="P:scpl.Marker.Type">
+            <summary>
+            The Marker Type
+            </summary>
+        </member>
+        <member name="P:scpl.Marker.DropLine">
+            <summary>
+            Boolean flag to draw a dropline.
+            </summary>
+        </member>
+        <member name="P:scpl.Marker.Size">
+            <summary>
+            The marker size.
+            </summary>
+        </member>
+        <member name="P:scpl.Marker.Filled">
+            <summary>
+            Fill with color.
+            </summary>
+        </member>
+        <member name="P:scpl.Marker.Color">
+            <summary>
+            The marker color.
+            </summary>
+        </member>
+        <member name="P:scpl.Marker.Pen">
+            <summary>
+            The Pen used to draw the marker.
+            </summary>
+        </member>
+        <member name="T:scpl.PhysicalAxis">
+            <summary>
+            C# doesn't have templates. If it did, I might derive PhysicalAxis from the 
+            templated Axis type (LinearAxis etc). Instead, use a has-a relationship with an
+            Axis superclass.
+            Class containing information about the physical axis.
+            </summary>
+        </member>
+        <member name="M:scpl.PhysicalAxis.init">
+            <summary>
+            Helper function for constructors.
+            </summary>
+        </member>
+        <member name="M:scpl.PhysicalAxis.#ctor">
+            <summary>
+            Parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:scpl.PhysicalAxis.#ctor(scpl.Axis,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Constructor, using an existing axis and information on physical coordinates.
+            </summary>
+            <param name="a">An Axis instance.</param>
+            <param name="physicalMin">The physical coordinates of the axis minimum.</param>
+            <param name="physicalMax">The physical coordinates of the axis maximum.</param>
+        </member>
+        <member name="M:scpl.PhysicalAxis.GetBoundingBox">
+            <summary>
+            Get the bounding box of the physical axis.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:scpl.PhysicalAxis.Draw(System.Drawing.Graphics)">
+            <summary>
+            Draws the Axis connected to this PhysicalAxis.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <returns>The bounding box.</returns>
+        </member>
+        <member name="M:scpl.PhysicalAxis.WorldToPhysical(System.Double,System.Boolean)">
+            <summary>
+            Transformation from world (user) coordinates to physical (screen) coordinates.
+            </summary>
+            <param name="coord">The coordinate value to transform.</param>
+            <param name="clip">Flag to indicate clipping.</param>
+            <returns>The transformed coordinates.</returns>
+        </member>
+        <member name="M:scpl.PhysicalAxis.PhysicalToWorld(System.Drawing.PointF,System.Boolean)">
+            <summary>
+            Transformation from physical (screen) coordinates to  world (user) coordinates.
+            </summary>
+            <param name="p">A physical coordinate.</param>
+            <param name="clip">Flag to indicate clipping.</param>
+            <returns>The transformed coordinates.</returns>
+        </member>
+        <member name="M:scpl.PhysicalAxis.SetWorldLimits(System.Drawing.Point,System.Drawing.Point)">
+            <summary>
+            This sets new world limits for the axis from two points
+            selected within the plot area.
+            </summary>
+            <param name="min">The upper left point of the selection.</param>
+            <param name="max">The lower right point of the selection.</param>
+        </member>
+        <member name="F:scpl.PhysicalAxis.physicalMin_">
+            <summary>
+            Protected member containing the physical coordinates of the axis minimum.
+            </summary>
+        </member>
+        <member name="F:scpl.PhysicalAxis.physicalMax_">
+            <summary>
+            Protected member containing the physical coordinates of the axis maximum.
+            </summary>
+        </member>
+        <member name="P:scpl.PhysicalAxis.PhysicalMin">
+            <summary>
+            Accessor for the physical coordinates of the axis minimum.
+            </summary>
+        </member>
+        <member name="P:scpl.PhysicalAxis.PhysicalMax">
+            <summary>
+            Accessor for the physical coordinates of the axis maximum.
+            </summary>
+        </member>
+        <member name="P:scpl.PhysicalAxis.Axis">
+            <summary>
+            Accessor for the Axis which the PhysicalAxis refers to.
+            </summary>
+        </member>
+        <member name="T:scpl.PlotSurface2D">
+            <summary>
+            Class providing the main capabilities of a plot object.
+            </summary>
+        </member>
+        <member name="M:scpl.PlotSurface2D.HitTest(System.Drawing.Point)">
+            <summary>
+            Performs a hit test with the given point and returns information 
+            about the object being hit.
+            </summary>
+            <param name="p">The point to test.</param>
+            <returns></returns>
+        </member>
+        <member name="M:scpl.PlotSurface2D.#ctor">
+            <summary>
+            Default parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:scpl.PlotSurface2D.Add(scpl.IDrawable)">
+            <summary>
+            Adds a trace plot to the plot surface.
+            </summary>
+            <param name="p">The trace plot to add.</param>
+        </member>
+        <member name="M:scpl.PlotSurface2D.Add(scpl.IDrawable,scpl.PlotSurface2D.XAxisPosition,scpl.PlotSurface2D.YAxisPosition)">
+            <summary>
+            Adds a trace plot to the plot surface.
+            </summary>
+            <param name="p">The trace plot to add.</param>
+            <param name="xp">The position of the X axis.</param>
+            <param name="yp">The position of the Y axis.</param>
+        </member>
+        <member name="M:scpl.PlotSurface2D.Draw(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Renders the plot.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="bounds">The rectangle storing the bounds for rendering.</param>
+        </member>
+        <member name="M:scpl.PlotSurface2D.Clear">
+            <summary>
+            Clears the plot and resets to default values.
+            </summary>
+        </member>
+        <member name="M:scpl.PlotSurface2D.SaveAsFile(System.String,System.Int32,System.Int32,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Save as a picture file.
+            </summary>
+            <param name="strFilePath">File name.</param>
+            <param name="width">Image width.</param>
+            <param name="height">Image height.</param>
+            <param name="imageFormat">Image format.</param>
+            <returns>True if file saved.</returns>
+        </member>
+        <member name="M:scpl.PlotSurface2D.SaveAsFile(System.String,System.Int32,System.Int32)">
+            <summary>
+            Save as a picture file.
+            </summary>
+            <param name="strFilePath">File name.</param>
+            <param name="width">Image width.</param>
+            <param name="height">Image height.</param>
+            <returns>True if file saved.</returns>
+        </member>
+        <member name="P:scpl.PlotSurface2D.XAxis1">
+            <summary>
+            The first abscissa axis.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.YAxis1">
+            <summary>
+            The first ordinate axis.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.XAxis2">
+            <summary>
+            The second abscissa axis.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.YAxis2">
+            <summary>
+            The second ordinate axis.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.PhysicalXAxis1Cache">
+            <summary>
+            Returns the physical information of Xaxis1.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.PhysicalYAxis1Cache">
+            <summary>
+            Returns the physical information of Yaxis1.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.PhysicalXAxis2Cache">
+            <summary>
+            Returns the physical information of Xaxis2.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.PhysicalYAxis2Cache">
+            <summary>
+            Returns the physical information of Yaxis2.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.Title">
+            <summary>
+            The plot title.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.TitleFont">
+            <summary>
+            The plot title font.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.Padding">
+            <summary>
+            The padding distance.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.AutoScale">
+            <summary>
+            Flag for plot automatic scaling.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.TitleBrush">
+            <summary>
+            The Bush used for drawing the title.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.PlotBackColor">
+            <summary>
+            The plot background color.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.ImageFormatDefault">
+            <summary>
+            The File Format to use for the default.
+            </summary>
+        </member>
+        <member name="T:scpl.PlotSurface2D.XAxisPosition">
+            <summary>
+            Possible positions of the X axis (enum).
+            </summary>
+        </member>
+        <member name="F:scpl.PlotSurface2D.XAxisPosition.Top">
+            <summary>
+            X axis is at top.
+            </summary>
+        </member>
+        <member name="F:scpl.PlotSurface2D.XAxisPosition.Bottom">
+            <summary>
+            X axis is at bottom.
+            </summary>
+        </member>
+        <member name="T:scpl.PlotSurface2D.YAxisPosition">
+            <summary>
+            Possible positions of the Y axis (enum).
+            </summary>
+        </member>
+        <member name="F:scpl.PlotSurface2D.YAxisPosition.Left">
+            <summary>
+            Y axis is to the left.
+            </summary>
+        </member>
+        <member name="F:scpl.PlotSurface2D.YAxisPosition.Right">
+            <summary>
+            Y axis is to the right.
+            </summary>
+        </member>
+        <member name="T:scpl.PlotSurface3D">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="M:scpl.PlotSurface3D.#ctor">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="T:scpl.PointPlot">
+            <summary>
+            Provides ability to trace marker plots.
+            </summary>
+        </member>
+        <member name="F:scpl.PointPlot.marker_">
+            <summary>
+            The protected marker member.
+            </summary>
+        </member>
+        <member name="M:scpl.PointPlot.#ctor">
+            <summary>
+            Constructor for the marker plot.
+            </summary>
+        </member>
+        <member name="M:scpl.PointPlot.#ctor(scpl.Marker)">
+            <summary>
+            Constructor for the marker plot.
+            </summary>
+            <param name="marker">The marker to use.</param>
+        </member>
+        <member name="M:scpl.PointPlot.Draw(System.Drawing.Graphics,scpl.PhysicalAxis,scpl.PhysicalAxis)">
+            <summary>
+            Renders the marker plot.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="xAxis">The X axis where the trace plot is attached to.</param>
+            <param name="yAxis">The Y axis where the trace plot is attached to.</param>
+        </member>
+        <member name="M:scpl.PointPlot.SuggestXAxis">
+            <summary>
+            Provides a hint for the X axis.
+            </summary>
+            <returns>The X axis.</returns>
+        </member>
+        <member name="M:scpl.PointPlot.SuggestYAxis">
+            <summary>
+            Provides a hint for the Y axis.
+            </summary>
+            <returns>The Y axis.</returns>
+        </member>
+        <member name="F:scpl.PointPlot.label_">
+            <summary>
+            The protected label member.
+            </summary>
+        </member>
+        <member name="M:scpl.PointPlot.DrawLegendLine(System.Drawing.Graphics,System.Drawing.RectangleF)">
+            <summary>
+            Method used to draw the line in the plot legend.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="startEnd">The RectangleF storing the position of the legend line.</param>
+        </member>
+        <member name="P:scpl.PointPlot.Label">
+            <summary>
+            The trace label.
+            </summary>
+        </member>
+        <member name="P:scpl.PointPlot.Marker">
+            <summary>
+            The Marker object used for the plot.
+            </summary>
+        </member>
+        <member name="M:scpl.SequenceAdapter.#ctor(System.Object,System.String,System.Object,System.Object)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="dataSource">the plot DataSource</param>
+            <param name="valueData">the plot ValueData</param>
+            <param name="abscissaData">the plot AbscissaData</param>
+        </member>
+        <member name="M:scpl.SequenceAdapter.ArrayMinMax(System.Collections.IList,System.Object@,System.Object@)">
+            <summary>
+            Returns the minimum and maximum values in an array.
+            </summary>
+            <param name="a">The array to search.</param>
+            <param name="min">The minimum value.</param>
+            <param name="max">The maximum value.</param>
+            <returns>true is min max set, false otherwise (a = null or zero length).</returns>
+        </member>
+        <member name="M:scpl.SequenceAdapter.RowArrayMinMax(System.Data.DataRowCollection,System.Object@,System.Object@,System.String)">
+            <summary>
+            Returns the minimum and maximum values in an array.
+            </summary>
+            <param name="a">The array to search.</param>
+            <param name="min">The minimum value.</param>
+            <param name="max">The maximum value.</param>
+            <returns>true is min max set, false otherwise (a = null or zero length).</returns>
+        </member>
+        <member name="T:scpl.StartStep">
+            <summary>
+            Defines ...
+            </summary>
+        </member>
+        <member name="T:scpl.StepPlot">
+            <summary>
+            Provides ability to trace step plots.
+            </summary>
+        </member>
+        <member name="M:scpl.StepPlot.#ctor">
+            <summary>
+            Constructor for the step plot.
+            </summary>
+            <param name="data">A Data Adapter object implementing the ISequenceAdapter interface.</param>
+        </member>
+        <member name="M:scpl.StepPlot.Draw(System.Drawing.Graphics,scpl.PhysicalAxis,scpl.PhysicalAxis)">
+            <summary>
+            Renders the step plot.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="xAxis">The X axis where the trace plot is attached to.</param>
+            <param name="yAxis">The Y axis where the trace plot is attached to.</param>
+        </member>
+        <member name="M:scpl.StepPlot.SuggestXAxis">
+            <summary>
+            Provides a hint for the X axis.
+            </summary>
+            <returns>The X axis.</returns>
+        </member>
+        <member name="M:scpl.StepPlot.SuggestYAxis">
+            <summary>
+            Provides a hint for the Y axis.
+            </summary>
+            <returns>The Y axis.</returns>
+        </member>
+        <member name="P:scpl.StepPlot.Center">
+            <summary>
+            Centers the step plot.
+            </summary>
+        </member>
+        <member name="T:scpl.TextPlot">
+            <summary>
+            Summary description for TextPlot.
+            </summary>
+        </member>
+        <member name="M:scpl.TextPlot.#ctor">
+            <summary>
+            Constructor for TexPlot
+            </summary>
+        </member>
+        <member name="M:scpl.TextPlot.#ctor(scpl.Marker)">
+            <summary>
+            Constructor for TexPlot
+            </summary>
+            <param name="marker">The desired marker.</param>
+        </member>
+        <member name="M:scpl.TextPlot.Draw(System.Drawing.Graphics,scpl.PhysicalAxis,scpl.PhysicalAxis)">
+            <summary>
+            Renders the marker plot and the label.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="xAxis">The X axis where the trace plot is attached to.</param>
+            <param name="yAxis">The Y axis where the trace plot is attached to.</param>
+        </member>
+        <member name="P:scpl.TextPlot.TextLabelPosition">
+            <summary>
+            Accessor to the position of the label.
+            </summary>
+        </member>
+        <member name="P:scpl.TextPlot.Font">
+            <summary>
+            The Font used to write text.
+            </summary>
+        </member>
+        <member name="T:scpl.TextPlot.TextLabelPositions">
+            <summary>
+            Enumeration for Text label position with respect to datapoint
+            </summary>
+        </member>
+        <member name="F:scpl.TextPlot.TextLabelPositions.Above">
+            <summary>
+            Above
+            </summary>
+        </member>
+        <member name="F:scpl.TextPlot.TextLabelPositions.Below">
+            <summary>
+            Below
+            </summary>
+        </member>
+        <member name="F:scpl.TextPlot.TextLabelPositions.Left">
+            <summary>
+            To the left.
+            </summary>
+        </member>
+        <member name="F:scpl.TextPlot.TextLabelPositions.Right">
+            <summary>
+            To the Right.
+            </summary>
+        </member>
+        <member name="T:scpl.web.Design.PlotSurface2D">
+            <summary>
+            The Design Time rendered for the scpl.web.PlotSurface2D control.
+            </summary>
+        </member>
+        <member name="M:scpl.web.Design.PlotSurface2D.GetDesignTimeHtml">
+            <summary>
+            The design time generated HTML for the control.
+            </summary>
+            <returns>A string containing the HTML rendering.</returns>
+        </member>
+        <member name="T:scpl.web.PlotSurface2D">
+            <summary>
+            The class implementing the web control.
+            </summary>
+        </member>
+        <member name="M:scpl.web.PlotSurface2D.#ctor">
+            <summary>
+            Parameterless constructor.
+            </summary>
+        </member>
+        <member name="F:scpl.web.PlotSurface2D.PlotUrl">
+            <summary>
+            The URL to redirect for the plot.
+            </summary>
+        </member>
+        <member name="M:scpl.web.PlotSurface2D.Clear">
+            <summary>
+            Clears the plot.
+            </summary>
+        </member>
+        <member name="M:scpl.web.PlotSurface2D.Add(scpl.IDrawable)">
+            <summary>
+            Add a plot to the plot surface.
+            </summary>
+            <param name="p">the plot to add.</param>
+        </member>
+        <member name="M:scpl.web.PlotSurface2D.Add(scpl.IDrawable,scpl.PlotSurface2D.XAxisPosition,scpl.PlotSurface2D.YAxisPosition)">
+            <summary>
+            Adds a trace plot to the plot surface.
+            </summary>
+            <param name="p">The trace plot to add.</param>
+            <param name="xp">The position of the X axis.</param>
+            <param name="yp">The position of the Y axis.</param>
+        </member>
+        <member name="M:scpl.web.PlotSurface2D.Refresh">
+            <summary>
+            Refreshes the plot.
+            </summary>
+        </member>
+        <member name="M:scpl.web.PlotSurface2D.ToBrowser">
+            <summary>
+            Renders the inner bitmap to a MemoryStream.
+            </summary>
+            <returns>The MemoryStream object.</returns>
+        </member>
+        <member name="M:scpl.web.PlotSurface2D.OnInit(System.EventArgs)">
+            <summary>
+            Initialization event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:scpl.web.PlotSurface2D.Render(System.Web.UI.HtmlTextWriter)">
+            <summary> 
+            Render this control as an HTML stream.
+            </summary>
+            <param name="output">The HTML writer to write out to.</param>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.Inner">
+            <summary>
+            The inner scpl.Bitmap.PlotSurface2D object.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.Width">
+            <summary>
+            The Width of the control.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.Height">
+            <summary>
+            The Height of the control.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.Title">
+            <summary>
+            The plot title.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.TitleFont">
+            <summary>
+            The plot title font.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.Padding">
+            <summary>
+            The padding space (in graphics units) for the plot.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.XAxis1">
+            <summary>
+            The first abscissa axis.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.YAxis1">
+            <summary>
+            The first ordinate axis.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.XAxis2">
+            <summary>
+            The second abscissa axis.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.YAxis2">
+            <summary>
+            The second ordinate axis.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.PlotBackColor">
+            <summary>
+            The plot background color.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.BackColor">
+            <summary>
+            The background color.
+            </summary>
+        </member>
+        <member name="P:scpl.web.PlotSurface2D.Bitmap">
+            <summary>
+            The inner bitmap object used for rendering the web control.
+            </summary>
+        </member>
+        <member name="T:scpl.Windows.PlotSurface2D">
+            <summary>
+            PlotSurface2D Windows Control.
+            </summary>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.#ctor">
+            <summary>
+            Parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            Override for the OnPaint method.
+            </summary>
+            <param name="pe">The Paint event arguments.</param>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.Draw(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Renders the plot.
+            </summary>
+            <param name="g">The Graphics surface.</param>
+            <param name="bounds">The rectangle storing the bounds for rendering.</param>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.Clear">
+            <summary>
+            Clears the plot and resets to default values.
+            </summary>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.Add(scpl.IDrawable)">
+            <summary>
+            Adds a trace plot to the plot surface.
+            </summary>
+            <param name="p">The trace plot to add.</param>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.Add(scpl.IDrawable,scpl.PlotSurface2D.XAxisPosition,scpl.PlotSurface2D.YAxisPosition)">
+            <summary>
+            Adds a trace plot to the plot surface.
+            </summary>
+            <param name="p">The trace plot to add.</param>
+            <param name="xp">The position of the X axis.</param>
+            <param name="yp">The position of the Y axis.</param>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.OnMouseDown(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Override method for the MouseDown event.
+            </summary>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.OnMouseMove(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Override method for the MouseMove event.
+            </summary>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.OnMouseUp(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Override method for the MouseUp event.
+            </summary>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.AllowSelection">
+            <summary>
+            Flag to allow the control to respond to mouse events.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.ShowCoordinates">
+            <summary>
+            Flag to display a coordinates in a tooltip.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.Title">
+            <summary>
+            The plot title.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.TitleFont">
+            <summary>
+            The plot title font.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.Padding">
+            <summary>
+            The padding distance.
+            </summary>
+            
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.XAxis1">
+            <summary>
+            The first abscissa axis.
+            </summary>
+            
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.YAxis1">
+            <summary>
+            The first ordinate axis.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.XAxis2">
+            <summary>
+            The second abscissa axis.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.YAxis2">
+            <summary>
+            The second ordinate axis.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.PhysicalXAxis1Cache">
+            <summary>
+            Returns the physical information of Xaxis1.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.PhysicalYAxis1Cache">
+            <summary>
+            Returns the physical information of Yaxis1.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.PhysicalXAxis2Cache">
+            <summary>
+            Returns the physical information of Xaxis2.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.PhysicalYAxis2Cache">
+            <summary>
+            Returns the physical information of Yaxis2.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.PlotBackColor">
+            <summary>
+            The plot background color.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -15,5 +15,5 @@ Team members include:
 ## Documentation 
 [Tutorial](Uniqueness/Tutorial.pdf)
 
-##Installer
+## Installer
 [Installer](Uniqueness-Install.exe)

@@ -76,11 +76,11 @@ File /r "Uniqueness\bin\Release\*.pdb"
     
     ;Create shortcuts
     CreateDirectory "$SMPROGRAMS\Corteva Agriscience\$StartMenuFolder"
-    CreateShortcut "$SMPROGRAMS\Corteva Agriscience\Similarity Search.lnk" "$INSTDIR\Similarity Search.exe"
+    CreateShortcut "$SMPROGRAMS\Corteva Agriscience\Uniqueness.lnk" "$INSTDIR\Uniqueness.exe"
     CreateShortcut "$SMPROGRAMS\Corteva Agriscience\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
   
   ;!insertmacro MUI_STARTMENU_WRITE_END
-
+  ExecShell "" '"$INSTDIR\Uniqueness.exe"'
 SectionEnd
 Section "Example Files" SecDummy1
     SetOutPath "$INSTDIR\Example"
@@ -96,9 +96,8 @@ Section "Uninstall"
   
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
     
-  Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk"
-  Delete "$SMPROGRAMS\Corteva Agriscience\Similarity Search.lnk"
-  Delete "$SMPROGRAMS\Corteva Agriscience\$StartMenuFolder\Uninstall.lnk" 
+  Delete "$SMPROGRAMS\Corteva Agriscience\Uniqueness.lnk"
+  Delete "$SMPROGRAMS\Corteva Agriscience\Uninstall.lnk" 
   RMDir "$SMPROGRAMS\$StartMenuFolder"
   RMDIR "$SMPROGRAMS\Corteva Agriscience\$StartMenuFolder"
   

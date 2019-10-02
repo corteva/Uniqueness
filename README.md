@@ -1,4 +1,4 @@
-# Similarity Search
+# Uniqueness
 
 This application was developed as part of the 2019 Spring Corteva Agriscience Hackathon by a team in Johnston, Iowa. 
 

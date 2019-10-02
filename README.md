@@ -16,4 +16,4 @@ Team members include:
 [Tutorial](Uniqueness/Tutorial.pdf)
 
 ## Installer
-[Installer](Uniqueness-Install.exe)
+[Installer](https://github.com/corteva/Uniqueness/raw/master/Uniqueness-Install.exe)

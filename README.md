@@ -10,3 +10,10 @@ Team members include:
     *  Deann Nelson, Research Analysist 
     *  Andrew Denner, Senior Software Developer
     *  Barry Nelson, Research Scientist   
+
+
+## Documentation 
+[Tutorial](Uniqueness/Tutorial.pdf)
+
+## Installer
+[Installer](https://github.com/corteva/Uniqueness/raw/master/Uniqueness-Install.exe)
